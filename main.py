@@ -11,10 +11,15 @@ def show_message():
     global clicks
     if clicks < 1:
         label1 = Label(text="Вы нажали клавишу")
-        label1.pack(anchor="e")
+        label1.place(x=250, y=340)
     clicks += 1
 # -----------------------------------
+# ------Функция получения длины пароля
+def length():
+    length_var = spinbox.get()
+    # print(length_var)
 
+# -----------------------------------
 # ------Функция ввода слова----------
 def add_word():
     # Переделать очистку label
@@ -51,28 +56,32 @@ root.geometry("400x400")
 # ------Кнопка Сгенерировать---------
 btn = ttk.Button(text="Сгенерировать пароль", command=show_message)
 # btn.place(x=200, y=300, width = 150, height = 40)
-btn.pack(side=RIGHT, anchor=S, pady=6, padx=6)
+btn.pack(side=RIGHT, anchor=S, pady=77, padx=34)
 #------------------------------------
 
 # ------Кнопка вставить слово--------
 enter_button = ttk.Button(text="Добавить", command=add_word)
-enter_button.place(x=250, y=136)
+enter_button.place(x=230, y=136)
 # -----------------------------------
 
 # ------Кнопка Очистить--------------
 clear_button = ttk.Button(text="Clear", command=clear)
-clear_button.pack(side=LEFT, anchor=S, padx=6, pady=6)
+clear_button.place(x=310, y=136)
 # -----------------------------------
 # ------Лого в контейнере------------
-BounsLogo = PhotoImage(file="bones.png")
+BounsLogo = PhotoImage(file="roflan.gif")
 labelLogo = ttk.Label(image=BounsLogo)
 labelLogo.place(x=6, y=6)
 # -----------------------------------
 
 # ------Поле ввода-------------------
 entry = ttk.Entry()
-entry.place(x=250, y=110)
+entry.place(x=230, y=110)
 entry.insert(0, "Введите текст")
+# ------Поле получения пароля--------
+entry_pass = ttk.Entry()
+entry_pass.place(x=20, y=300)
+# -----------------------------------
 # -----------------------------------
 languages_var = StringVar(value=[0])
 # ------Поле выбора языка------------
@@ -81,7 +90,11 @@ combobox = ttk.Combobox(textvariable=languages_var, values=languages, state="rea
 combobox.place(x=20, y=210)
 combobox.bind("<<ComboboxSelected>>", selected)
 #------------------------------------
-
+spinbox_var = StringVar(value=22)
+# ------Поле выбора длины пароля-----
+spinbox = ttk.Spinbox(from_=1, to=20, textvariable=spinbox_var, command=length)
+spinbox.place(x=20, y=240)
+# -----------------------------------
 enabledS = IntVar()
 enabledN = IntVar()
 enabledCl = IntVar()
@@ -98,10 +111,16 @@ enabled_Cletters.place(x=20, y=170)
 
 # ------Надписи----------------------
 labelout = ttk.Label(text="Здесь будут генерироваться пароли")
-labelout.place(x=30, y=340)
+labelout.place(x=20, y=340)
+
+label_language = ttk.Label(text="Выбор языка")
+label_language.place(x=175, y=210)
+
+label_function = ttk.Label(text="Длина пароля")
+label_function.place(x=175, y=240)
 
 label = ttk.Label(text="Проверка функций")
-label.place(x=20, y=240)
+label.place(x=20, y=270)
 # -----------------------------------
 
 root.mainloop()
