@@ -4,42 +4,88 @@ from tkinter.messagebox import showinfo
 
 clicks = 0
 ForLabel1 = 0
-addWord = []
+addWord = None
+length_var = []
 # ------Функция вывода сообщения в label
-def show_message():
-    # label["text"] = entry.get()
-    global clicks
-    if clicks < 1:
-        label1 = Label(text="Вы нажали клавишу")
-        label1.place(x=250, y=340)
-    clicks += 1
+def show_password():
+    entry_pass.insert(0, "Ваш пароль")
 # -----------------------------------
 # ------Функция получения длины пароля
 def length():
+    global length_var
     length_var = spinbox.get()
-    # print(length_var)
-
 # -----------------------------------
 # ------Функция ввода слова----------
 def add_word():
     # Переделать очистку label
+    global addWord
     addWord = entry.get()
-    # label_add_word = ttk.Label(text=addWord)
-    # label_add_word.place(x=250, y=166)
-
-    # clicks += 1
-    # if clicks > 1 and addWord[1]<addWord[0]:
-    #     addWord[0]=addWord[1]
-    # if click > 0:
-    #     label_add_word["text"] = "new text"
 # -----------------------------------
 
+#------Функция подключения символов-
+def checkbutton_enabledS():
+    if enabledS.get() == 1:
+        return True
+# -----------------------------------
+# ------Функция подключения цифр-----
+def checkbutton_enabledN():
+    if enabledN.get() == 1:
+        return True
+# -----------------------------------
+# ------Функция подключения заглавных букв
+def checkbutton_enabledCl():
+    if enabledCl.get() == 1:
+        return True
+# -----------------------------------
 # ------Функция выбора языка---------
 def selected(event):
     selection = combobox.get()
     label["text"] = f"Вы выбрали: {selection}"
 # -----------------------------------
+# ------Функция генерирования букв---
+def generate():
+    if combobox.get() == "Английский":
+        English_letters = ''                    # маленькие буквы
+        for i in range(ord('a'), ord('z')+1):
+            English_letters += chr(i)
+        print(English_letters)
 
+        if checkbutton_enabledCl() == True:
+            English_letters2 = ''
+            for j in range(ord('A'), ord('Z')+1):   # заглавные буквы
+                English_letters2 += chr(j)
+            print(English_letters2)
+    elif combobox.get() == "Русский":
+        Russian_letters = ''
+        for k in range(ord('а'), ord('я')+1):   # маленькие буквы
+            Russian_letters += chr(k)
+        print(Russian_letters)
+
+        if checkbutton_enabledCl() == True:
+            Russian_letters2 = ''
+            for k in range(ord('А'), ord('Я')+1):   # заглавные буквы
+                Russian_letters2 += chr(k)
+            print(Russian_letters2)
+
+    if checkbutton_enabledS() == True:
+        Simbols = ''
+        for s in range(ord('!'), ord('/')+1):   # символы
+            Simbols += chr(s)
+        print(Simbols)
+
+    if checkbutton_enabledN() == True:
+        Numbers = ''
+        for n in range(ord('0'), ord('9')+1):   # цифры
+            Numbers += chr(n)
+        print(Numbers)
+
+    length_pass = spinbox.get()                 # берем длину пароля
+
+    if addWord == None:
+        return
+    else:
+        word = addWord                          # введенное слово
+# -----------------------------------
 # ------Очистка полей----------------
 def clear():
     entry.delete(0, END)
@@ -54,11 +100,13 @@ root.geometry("400x400")
 # -----------------------------------
 
 # ------Кнопка Сгенерировать---------
-btn = ttk.Button(text="Сгенерировать пароль", command=show_message)
+btn = ttk.Button(text="Сгенерировать пароль", command=generate)
 # btn.place(x=200, y=300, width = 150, height = 40)
-btn.pack(side=RIGHT, anchor=S, pady=77, padx=34)
+btn.pack(side=RIGHT, anchor=S, padx=34, pady=77)
 #------------------------------------
-
+# ------Кнопка показать пароль-------
+btn_show = ttk.Button(text="Показать пароль", command=show_password)
+btn_show.pack(side=LEFT, anchor=S, padx=20, pady=50)
 # ------Кнопка вставить слово--------
 enter_button = ttk.Button(text="Добавить", command=add_word)
 enter_button.place(x=230, y=136)
@@ -90,7 +138,7 @@ combobox = ttk.Combobox(textvariable=languages_var, values=languages, state="rea
 combobox.place(x=20, y=210)
 combobox.bind("<<ComboboxSelected>>", selected)
 #------------------------------------
-spinbox_var = StringVar(value=22)
+spinbox_var = StringVar(value=[20])
 # ------Поле выбора длины пароля-----
 spinbox = ttk.Spinbox(from_=1, to=20, textvariable=spinbox_var, command=length)
 spinbox.place(x=20, y=240)
@@ -99,19 +147,19 @@ enabledS = IntVar()
 enabledN = IntVar()
 enabledCl = IntVar()
 # ------Настройка параметров генерации
-enabled_simbols = ttk.Checkbutton(text="Использовать %*_! символы", variable=enabledS) # , command=checkbutton_changed
+enabled_simbols = ttk.Checkbutton(text="Использовать %*_! символы", variable=enabledS)
 enabled_simbols.place(x=20, y=110)
 
-enabled_numbers = ttk.Checkbutton(text="Использовать цифры", variable=enabledN) # , command=checkbutton_changed
+enabled_numbers = ttk.Checkbutton(text="Использовать цифры", variable=enabledN)
 enabled_numbers.place(x=20, y=140)
 
-enabled_Cletters = ttk.Checkbutton(text="Использовать заглавные буквы", variable=enabledCl) # , command=checkbutton_changed
+enabled_Cletters = ttk.Checkbutton(text="Использовать заглавные буквы", variable=enabledCl)
 enabled_Cletters.place(x=20, y=170)
 # -----------------------------------
 
 # ------Надписи----------------------
 labelout = ttk.Label(text="Здесь будут генерироваться пароли")
-labelout.place(x=20, y=340)
+labelout.place(x=20, y=360)
 
 label_language = ttk.Label(text="Выбор языка")
 label_language.place(x=175, y=210)
